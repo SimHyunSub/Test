@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>list</title>
+<script type="text/javascript" src="/test/webjars/jquery/3.3.1/dist/jquery.min.js"></script>
+<script type="text/javascript" src="/test/resources/js/common.js"></script>
+<script>
+		$(document).ready(function(){
+			var dd = [];
+			
+			$.ajax({url: "/test/json/board/selectList"})
+			.done(function(kwon) {
+				var d = JSON.parse(kwon)
+				dd = d.result;
+				
+				$("#list").empty();
+				
+				for(var i = 0; i < dd.length; i++){
+					$("#list").append("<li>" + dd[i].title + "</a></li>")
+				}
+				
+				$("#list li").on("click", function(){
+					var index = $("#list li").index($(this));
+					var boardNo = dd[index].boardNo;
+					
+					setCookie("boardNo",boardNo); //쿠키생성
+					location.href = "/test/resources/board/detail.html";
+					console.log(boardNo);
+				});
+			});
+		});
+</script>
+<style>
+	li{cursor:pointer;}
+	div{width:150px;}
+</style>
+</head>
+<body>
+	<a href="/test/resources/board/insert.html">작성</a>
+	<ul>
+		<div id="list">
+		
+		</div>
+	</ul>
+</body>
+</html>
